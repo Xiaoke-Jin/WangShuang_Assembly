@@ -35,7 +35,7 @@ MOUNT C D:\ASM
 # 打开 c:
 c:
 
-# 此时 D:\ASM 下有  `debug.exe masm.exe link.exe` 三个文件
+# 此时 D:\ASM 下有 `debug.exe masm.exe link.exe` 三个文件
 # 把需要汇编、链接的源文件加入-----------------------------------------------------------
 masm 9_1;
 link 9_1;
