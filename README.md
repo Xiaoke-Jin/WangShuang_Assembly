@@ -30,7 +30,7 @@
 我在 `DOSBox-0.74.conf` 添加了以下命令。
 
 ```
-# 将目录D:\ASM 挂载为 DOSBOX 下的 C:
+# 将目录D:\ASM 挂载到 DOSBOX 下的 C:
 MOUNT C D:\ASM
 # 打开 c:
 c:
