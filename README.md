@@ -62,8 +62,13 @@ del *.obj
 
 cd \exe
 # 前面把 D:\ASM 里的 exe 文件删完了
-# 也许你想手动汇编、链接
+# 也许你想手动汇编、链接，就算你不想
+# 也得执行这三条命令，否则下次打开 DosBox 时，D:\ASM 中没有 `masm.exe link.exe`，就无法得到可执行文件
 copy debug.exe .. /-Y
 copy masm.exe .. /-Y
 copy link.exe .. /-Y
 ```
+
+以下是打开 DoxBox 后的效果图。
+
+![image](https://user-images.githubusercontent.com/82639844/192931247-df82887b-88e0-430f-b59c-3f87f721c297.png)
