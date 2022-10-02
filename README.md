@@ -69,6 +69,8 @@ copy masm.exe .. /-Y
 copy link.exe .. /-Y
 ```
 
-以下是打开 DoxBox 后的效果图。
+### 效果图
+exe 文件夹下有 debug.exe，可以调试。
+ASM 文件夹下有 debug.exe，masm.exe，link.exe，可以汇编、链接、调试。
 
 ![image](https://user-images.githubusercontent.com/82639844/192931247-df82887b-88e0-430f-b59c-3f87f721c297.png)
