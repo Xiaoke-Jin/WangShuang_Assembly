@@ -70,6 +70,8 @@ copy link.exe .. /-Y
 ```
 
 ### 效果图
+打开 DosBox 后，文件目录如下图所示。
+
 exe 文件夹下有 debug.exe，可以调试。
 ASM 文件夹下有 debug.exe，masm.exe，link.exe，可以汇编、链接、调试。
 
