@@ -9,7 +9,7 @@ start:
     mov ax, data1
     mov es, ax
 
-    mov al, a
+    mov al, a      ; 使用 es 作为段寄存器
 
     mov ah, 4ch
     int 21h

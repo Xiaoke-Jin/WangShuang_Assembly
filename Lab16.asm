@@ -1,20 +1,21 @@
-assume cs:code,ds:data,ss:stack
+assume cs:code, ds:data, ss:stack
 
 data segment
 	db	128 dup (0)
 data ends
 
-stack segment stack
+stack segment
 	db	128 dup (0)
 stack ends
 
 code segment
-	start:	mov ax,stack
+	start:
+		mov ax,stack
 		mov ss,ax
 		mov sp,128
 
-		mov al,4
-		mov ah,1
+		mov al,5
+		mov ah,2
 
 		call cpy_new_int7CH   ; 安装
 		call set_new_int7CH   ; 设置中断向量
@@ -25,10 +26,37 @@ code segment
 		int 21H
 
 
+;=====================================================================
+set_new_int7CH:
+		mov bx,0
+		mov es,bx
+
+		cli
+		mov word ptr es:[7CH*4],200H     ; 设置 中断 7CH 的中断向量
+		mov word ptr es:[7CH*4+2],0
+		sti
+		ret
+;=====================================================================
+cpy_new_int7CH:	mov bx,cs
+		mov ds,bx
+		mov si,OFFSET new_int7CH
+
+		mov bx,0
+		mov es,bx
+		mov di,200H     ; 安装到 0000:0200
+
+		mov cx,OFFSET int7CH_end - OFFSET new_int7CH
+		cld
+		rep movsb
+
+		ret
+
+
 ;===================================================================== 需要安装的程序的开头
 new_int7CH:	jmp int7CH_START
 
-FUNCTION_ADDRESS dw	OFFSET clear_screen 		    - OFFSET new_int7CH + 200H
+FUNCTION_ADDRESS:
+			dw	OFFSET clear_screen 		    - OFFSET new_int7CH + 200H
 			dw	OFFSET set_pre_screen_color 	- OFFSET new_int7CH + 200H
 			dw	OFFSET set_back_screen_color	- OFFSET new_int7CH + 200H
 			dw	OFFSET roll_screen_up 		    - OFFSET new_int7CH + 200H
@@ -43,6 +71,7 @@ int7CH_START:
 		mov bx,0
 		mov es,bx
 
+		; 定位到 ah 指定的子程序
 		mov bl,ah
 		mov bh, 0
 		add bx,bx
@@ -68,7 +97,7 @@ int7CHRet:	iret
 
 
 ;=====================================================================
-; 向上滚动一行
+; 1. 向上滚动一行
 roll_screen_up:	push bx
 		push cx
 		push ds
@@ -96,7 +125,7 @@ roll_screen_up:	push bx
 		pop bx
 		ret
 ;=====================================================================
-; 设置背景色
+; 2. 设置背景色
 set_back_screen_color:
 		push ax
 		push bx
@@ -125,7 +154,7 @@ setBackScreenColor:
 		pop ax
 		ret
 ;=====================================================================
-; 设置前景色
+; 3. 设置前景色
 set_pre_screen_color:
 		push ax
 		push bx
@@ -150,7 +179,7 @@ setPreScreenColor:
 		pop ax
 		ret
 ;=====================================================================
-; 清屏
+; 4. 清屏
 clear_screen:	push bx
 		push cx
 		push es
@@ -176,31 +205,6 @@ int7CH_end:	nop
 ;===================================================================== 需要安装的程序的末尾
 
 
-
-;=====================================================================
-set_new_int7CH:
-		mov bx,0
-		mov es,bx
-
-		cli
-		mov word ptr es:[7CH*4],200H     ; 设置 中断 7CH 的中断向量
-		mov word ptr es:[7CH*4+2],0
-		sti
-		ret
-;=====================================================================
-cpy_new_int7CH:	mov bx,cs
-		mov ds,bx
-		mov si,OFFSET new_int7CH
-
-		mov bx,0
-		mov es,bx
-		mov di,200H     ; 安装到 0000:0200
-
-		mov cx,OFFSET int7CH_end - OFFSET new_int7CH
-		cld
-		rep movsb
-
-		ret
 
 code ends
 
